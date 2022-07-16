@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 project(path_finder)
 
 add_compile_options(-std=c++14)
-set(CMAKE_BUILD_TYPE "DEBUG")
+set(CMAKE_BUILD_TYPE "Release")
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g -fPIC")
 

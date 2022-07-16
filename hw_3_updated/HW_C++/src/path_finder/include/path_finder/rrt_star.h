@@ -281,23 +281,26 @@ namespace path_plan
         // !  4. [Optional] You can sort the potential parents first in increasing order by cost-from-start value;
         // !  5. [Optional] You can store the collison-checking results for later usage in the Rewire procedure.
         // ! Implement your own code inside the following loop
-        ROS_INFO("neighbour_nodes size : %d\n", neighbour_nodes.size());
-        std::multimap<double, RRTNode3DPtr> candidate_parent_nodes;
         for (auto &curr_node : neighbour_nodes)
         {
-          if (!map_ptr_->isSegmentValid(curr_node->x, x_new)) {
-            continue;
-          }
-          double cur_cost_from_new = calDist(curr_node->x, x_new);
-          double cur_dist_from_start = curr_node->cost_from_start + cur_cost_from_new;
+          // if (curr_node == nearest_node) 
+          // {
+          //   continue;
+          // }
+          // double cur_cost_from_new = calDist(curr_node->x, x_new);
+          // double cur_dist_from_start = curr_node->cost_from_start + cur_cost_from_new;
 
-          curr_node->cost_from_parent = cur_cost_from_new;
-          curr_node->cost_from_start = cur_dist_from_start;
-          candidate_parent_nodes.insert({cur_dist_from_start, curr_node});
+          // if (cur_dist_from_start < min_dist_from_start)
+          // {
+          //   if (!map_ptr_->isSegmentValid(curr_node->x, x_new)) {
+          //     continue;
+          //   }
+          //   cost_from_p = cur_cost_from_new;
+          //   min_dist_from_start = cur_dist_from_start;
+          //   min_node = curr_node;
+          // }
         }
-        min_node = candidate_parent_nodes.begin()->second;
-        min_dist_from_start = min_node->cost_from_start;
-        cost_from_p = min_node->cost_from_parent;
+
         // neighbour_nodes.
         // ! Implement your own code inside the above loop
 
@@ -342,20 +345,17 @@ namespace path_plan
         // ! Implement your own code between the dash lines [--------------] in the following loop
         for (auto &curr_node : neighbour_nodes)
         {
-          double best_cost_before_rewire = goal_node_->cost_from_start;
+          double best_cost_before_rewire = curr_node->cost_from_start;
           // ! -------------------------------------
-          if (!map_ptr_->isSegmentValid(curr_node->x, new_node->x))
-          {
-            continue;
-          }
-          double dist2goal = calDist(goal_node_->x, curr_node->x);
-          double cur_cost_from_new = calDist(new_node->x, curr_node->x);
-          double cost_after_rewire = new_node->cost_from_start + cur_cost_from_new;
-          if (cost_after_rewire < best_cost_before_rewire) 
-          {
-            changeNodeParent(curr_node, new_node, cur_cost_from_new);
-            best_cost_before_rewire = cost_after_rewire;
-          }
+          // double cur_cost_from_new = calDist(new_node->x, curr_node->x);
+          // double cost_after_rewire = new_node->cost_from_start + cur_cost_from_new;
+          // if (cost_after_rewire < curr_node->cost_from_start) {
+          //   if (!map_ptr_->isSegmentValid(curr_node->x, new_node->x))
+          //   {
+          //     continue;
+          //   }
+          //   changeNodeParent(curr_node, new_node, cur_cost_from_new);
+          // }
           // ! -------------------------------------
           if (best_cost_before_rewire > goal_node_->cost_from_start)
           {
