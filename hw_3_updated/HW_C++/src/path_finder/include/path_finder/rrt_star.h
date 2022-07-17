@@ -56,6 +56,8 @@ namespace path_plan
       {
         nodes_pool_[i] = new TreeNode;
       }
+
+      use_informed_sampling_ = true;
     }
     ~RRTStar(){};
 
@@ -82,6 +84,12 @@ namespace path_plan
       valid_tree_node_nums_ = 2;             // put start and goal in tree
 
       ROS_INFO("[RRT*]: RRT starts planning a path");
+
+      if (use_informed_sampling_)
+      {
+        calInformedSet(10000000000.0, s, g, scale_, trans_, rot_);
+        sampler_.setInformedTransRot(trans_, rot_);
+      }
       return rrt_star(s, g);
     }
 
@@ -110,7 +118,11 @@ namespace path_plan
     ros::NodeHandle nh_;
 
     BiasSampler sampler_;
+    // for informed sampling
+    Eigen::Vector3d trans_, scale_;
+    Eigen::Matrix3d rot_;
 
+    bool use_informed_sampling_;
     double steer_length_;
     double search_radius_;
     double search_time_;
@@ -213,6 +225,7 @@ namespace path_plan
     {
       ros::Time rrt_start_time = ros::Time::now();
       bool goal_found = false;
+      double c_square = (g - s).squaredNorm() / 4.0;
 
       /* kd tree init */
       kdtree *kd_tree = kd_create(3);
@@ -331,7 +344,19 @@ namespace path_plan
             fillPath(goal_node_, curr_best_path);
             path_list_.emplace_back(curr_best_path);
             solution_cost_time_pair_list_.emplace_back(goal_node_->cost_from_start, (ros::Time::now() - rrt_start_time).toSec());
+
+            if (use_informed_sampling_)
+            {
+              scale_[0] = goal_node_->cost_from_start / 2.0;
+              scale_[1] = sqrt(scale_[0] * scale_[0] - c_square);
+              scale_[2] = scale_[1];
+              sampler_.setInformedSacling(scale_);
+              std::vector<visualization::ELLIPSOID> ellps;
+              ellps.emplace_back(trans_, scale_, rot_);
+              vis_ptr_->visualize_ellipsoids(ellps, "informed_set", visualization::yellow, 0.2);
+            }
           }
+
         }
 
         /* 3.rewire */
@@ -344,25 +369,39 @@ namespace path_plan
         // ! Implement your own code between the dash lines [--------------] in the following loop
         for (auto &curr_node : neighbour_nodes)
         {
-          double best_cost_before_rewire = goal_node_->cost_from_start;
           // ! -------------------------------------
           double cur_cost_from_new = calDist(new_node->x, curr_node->x);
           double cost_after_rewire = new_node->cost_from_start + cur_cost_from_new;
-          if (cost_after_rewire < curr_node->cost_from_start) {
+          bool not_consitent = cost_after_rewire < curr_node->cost_from_start ? 1 : 0;
+          bool is_promising = cost_after_rewire + calDist(curr_node->x, goal_node_->x) < goal_node_->cost_from_start ? 1 : 0;
+          if (not_consitent && is_promising) 
+          {
             if (!map_ptr_->isSegmentValid(curr_node->x, new_node->x))
             {
               continue;
             }
+            double best_cost_before_rewire = goal_node_->cost_from_start;
             changeNodeParent(curr_node, new_node, cur_cost_from_new);
+            if (best_cost_before_rewire > goal_node_->cost_from_start)
+            {
+              vector<Eigen::Vector3d> curr_best_path;
+              fillPath(goal_node_, curr_best_path);
+              path_list_.emplace_back(curr_best_path);
+              solution_cost_time_pair_list_.emplace_back(goal_node_->cost_from_start, (ros::Time::now() - rrt_start_time).toSec());
+
+              if (use_informed_sampling_)
+              {
+                scale_[0] = goal_node_->cost_from_start / 2.0;
+                scale_[1] = sqrt(scale_[0] * scale_[0] - c_square);
+                scale_[2] = scale_[1];
+                sampler_.setInformedSacling(scale_);
+                std::vector<visualization::ELLIPSOID> ellps;
+                ellps.emplace_back(trans_, scale_, rot_);
+                vis_ptr_->visualize_ellipsoids(ellps, "informed_set", visualization::yellow, 0.2);
+              }
+            }
           }
           // ! -------------------------------------
-          if (best_cost_before_rewire > goal_node_->cost_from_start)
-          {
-            vector<Eigen::Vector3d> curr_best_path;
-            fillPath(goal_node_, curr_best_path);
-            path_list_.emplace_back(curr_best_path);
-            solution_cost_time_pair_list_.emplace_back(goal_node_->cost_from_start, (ros::Time::now() - rrt_start_time).toSec());
-          }
         }
         /* end of rewire */
       }
@@ -420,6 +459,21 @@ namespace path_plan
           Q.push(leafptr);
         }
       }
+    }
+
+    void calInformedSet(double a2, const Eigen::Vector3d &foci1, const Eigen::Vector3d &foci2,
+                        Eigen::Vector3d &scale, Eigen::Vector3d &trans, Eigen::Matrix3d &rot)
+    {
+      trans = (foci1 + foci2) / 2.0;
+      scale[0] = a2 / 2.0;
+      Eigen::Vector3d diff(foci2 - foci1);
+      double c_square = diff.squaredNorm() / 4.0;
+      scale[1] = sqrt(scale[0] * scale[0] - c_square);
+      scale[2] = scale[1];
+      rot.col(0) = diff.normalized();
+      diff[2] = 0.0;
+      rot.col(1) = Eigen::AngleAxisd(0.5 * M_PI, Eigen::Vector3d::UnitZ()) * diff.normalized(); // project to the x-y plane and then rotate 90 degree;
+      rot.col(2) = rot.col(0).cross(rot.col(1));
     }
   };
 

@@ -36,6 +36,8 @@ public:
     normal_rand_ = std::normal_distribution<double>(0.0, 1.0);
     range_.setZero();
     origin_.setZero();
+
+    informed_ = false;
   };
 
   void setSamplingRange(const Eigen::Vector3d origin, const Eigen::Vector3d range)
@@ -46,17 +48,56 @@ public:
 
   void samplingOnce(Eigen::Vector3d &sample)
   {
+    if (informed_)
+    {
+      informedSamplingOnce(sample);
+    }
+    else 
+    {
+      uniformSamplingOnce(sample);
+    }
+  }
+
+  void uniformSamplingOnce(Eigen::Vector3d &sample)
+  {
     sample[0] = uniform_rand_(gen_);
     sample[1] = uniform_rand_(gen_);
     sample[2] = uniform_rand_(gen_);
     sample.array() *= range_.array();
     sample += origin_;
-  };
+  }
 
+  void informedSamplingOnce(Eigen::Vector3d &sample)
+  {
+    // random uniform sampling in a unit 3-ball
+    Eigen::Vector3d p;
+    p[0] = normal_rand_(gen_);
+    p[1] = normal_rand_(gen_);
+    p[2] = normal_rand_(gen_);
+    double r = pow(uniform_rand_(gen_), 0.33333);
+    sample = r * p.normalized();
+
+    // transform the pt into the ellipsoid
+    sample.array() *= radii_.array();
+    sample = rotation_ * sample;
+    sample += center_;
+  }
+
+  void setInformedSacling(const Eigen::Vector3d &scale)
+  {
+    informed_ = true;
+    radii_ = scale;
+  }
   // (0.0 - 1.0)
   double getUniRandNum()
   {
     return uniform_rand_(gen_);
+  }
+
+  void setInformedTransRot(const Eigen::Vector3d &trans, const Eigen::Matrix3d &rot)
+  {
+    center_ = trans;
+    rotation_ = rot;
   }
 
 private:
@@ -64,6 +105,11 @@ private:
   std::mt19937_64 gen_;
   std::uniform_real_distribution<double> uniform_rand_;
   std::normal_distribution<double> normal_rand_;
+
+  // for informed sampling
+  bool informed_;
+  Eigen::Vector3d center_, radii_;
+  Eigen::Matrix3d rotation_;
 };
 
 #endif // __SAMPLER_HPP__
