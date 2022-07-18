@@ -28,9 +28,9 @@ goal rcved at 11.7698 15.6205       0
 
 ## Informed-RRT*
 
-[informed_rrt_start](../HW_C%2B%2B/src/path_finder/include/path_finder/rrt_star.h)
+[informed_rrt_start](../HW_C%2B%2B/src/path_finder/include/path_finder/rrt_star.h#L348)
 
-[informedSamplingOnce](../HW_C%2B%2B/src/path_finder/include/path_finder/sampler.h#70)
+[informedSamplingOnce](../HW_C%2B%2B/src/path_finder/include/path_finder/sampler.h#L70)
 
 ```bash
 [ WARN] [1658069937.024682668]: 3D Goal Set
