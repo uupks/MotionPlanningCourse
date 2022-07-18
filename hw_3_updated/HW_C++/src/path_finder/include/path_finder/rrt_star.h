@@ -84,7 +84,7 @@ namespace path_plan
       valid_tree_node_nums_ = 2;             // put start and goal in tree
 
       ROS_INFO("[RRT*]: RRT starts planning a path");
-
+      sampler_.reset();
       if (use_informed_sampling_)
       {
         calInformedSet(10000000000.0, s, g, scale_, trans_, rot_);

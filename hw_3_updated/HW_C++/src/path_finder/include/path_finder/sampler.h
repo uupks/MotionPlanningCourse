@@ -99,7 +99,11 @@ public:
     center_ = trans;
     rotation_ = rot;
   }
-
+  
+  void reset()
+  {
+    informed_ = false;
+  }
 private:
   Eigen::Vector3d range_, origin_;
   std::mt19937_64 gen_;

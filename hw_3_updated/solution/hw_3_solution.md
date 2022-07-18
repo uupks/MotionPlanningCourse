@@ -45,3 +45,21 @@ goal rcved at -16.6455  19.0855        0
 ```
 ![3](./informed_rrt_start_0.01.png)
 
+* Update
+
+  由于目前作业框架第一次路径规划结果不会在`rviz`里显示，而我在 [plan](../HW_C%2B%2B/src/path_finder/include/path_finder/rrt_star.h#L64) 中没有重置 [sampler](../HW_C%2B%2B/src/path_finder/include/path_finder/sampler.h#L103) 的 [inform](../HW_C%2B%2B/src/path_finder/include/path_finder/sampler.h#L114)状态值，导致第二次`rrt*`一开始就是 `informed sampling space`，所以出现了上述情况。
+
+  修改之后 `Informed RRT*` 正常。
+
+  ```bash
+  [ WARN] [1658133899.166444100]: 3D Goal Set
+  [ INFO] [1658133899.166528900]: Setting goal: Frame:map, Position(-18.064, 18.006, 0.000), Orientation(0.000, 0.000, 0.000, 1.000) = Angle: 0.000
+
+  [ INFO] [1658133899.166761000]:
+  -----------------------------
+  goal rcved at -18.0639  18.0058        0
+  [ INFO] [1658133899.167013800]: [RRT*]: RRT starts planning a path
+  [ INFO] [1658133899.217548200]: [RRT*]: first path length: 56.3847, use_time: 0.0006463
+  [ INFO] [1658133899.217743600]: [RRT*] final path len: 46.7763
+  ```
+  ![4](./informed_rrt_start_2.png)
