@@ -52,14 +52,14 @@ goal rcved at -16.6455  19.0855        0
   修改之后 `Informed RRT*` 正常。
 
   ```bash
-  [ WARN] [1658133899.166444100]: 3D Goal Set
-  [ INFO] [1658133899.166528900]: Setting goal: Frame:map, Position(-18.064, 18.006, 0.000), Orientation(0.000, 0.000, 0.000, 1.000) = Angle: 0.000
+  [ WARN] [1658135669.211250600]: 3D Goal Set
+  [ INFO] [1658135669.211365200]: Setting goal: Frame:map, Position(22.030, 21.511, 0.000), Orientation(0.000, 0.000, 0.707, 0.707) = Angle: 1.571
 
-  [ INFO] [1658133899.166761000]:
+  [ INFO] [1658135669.211678800]:
   -----------------------------
-  goal rcved at -18.0639  18.0058        0
-  [ INFO] [1658133899.167013800]: [RRT*]: RRT starts planning a path
-  [ INFO] [1658133899.217548200]: [RRT*]: first path length: 56.3847, use_time: 0.0006463
-  [ INFO] [1658133899.217743600]: [RRT*] final path len: 46.7763
+  goal rcved at 22.0297 21.5111       0
+  [ INFO] [1658135669.211911400]: [RRT*]: RRT starts planning a path
+  [ INFO] [1658135669.262554300]: [RRT*]: first path length: 63.2573, use_time: 0.0043453
+  [ INFO] [1658135669.262723700]: [RRT*] final path len: 56.4433
   ```
-  ![4](./informed_rrt_start_2.png)
+  ![4](./informed_rrt_start_3.png)
