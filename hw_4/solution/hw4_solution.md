@@ -2,13 +2,13 @@
 
 ## Q1 - OBVP partially free final state
 
-参考论文 [A computationally efficient motion primitive for quadrocopter
-trajectory generation](./mueTRO15.pdf) (Section Ⅲ - C - 2):
+参考论文 [A computationally efficient motion primitive for quadrocopter trajectory generation](./mueTRO15.pdf) (Section Ⅲ - C - 2):
+
 > These states may correspondingly be specifified as free when solving the optimal input trajectory, by noting that the corresponding costates must equal zero at the end time.
 
 * Fixed position
   
-  当只固定末端位置时, 末端速度和加速度对应的 `costate` ($\lambda_{2}$ and $\lambda_{3}$)为0. 
+  当只固定末端位置时, 末端速度和加速度对应的 `costate` ( $\lambda_{2}$ and $\lambda_{3}$ )为0. 
   
   根据
   
@@ -29,7 +29,7 @@ trajectory generation](./mueTRO15.pdf) (Section Ⅲ - C - 2):
   \end{split}
   $$
 
-  由论文中公式(22)可得
+  由论文中公式(22), 代入上式可得
 
   $$
   \begin{split}
@@ -39,7 +39,7 @@ trajectory generation](./mueTRO15.pdf) (Section Ⅲ - C - 2):
   \end{split}
   $$
 
-  回代 $\beta$ 和 $\gamma$, 得到：
+  回代 $\alpha$ , 得到：
   $$
     \begin{split}
       \left[\begin{matrix} \alpha \\ \beta \\ \gamma \end{matrix}
