@@ -31,15 +31,15 @@ J=T &+ \frac{4 \left(- T vx_{f} - 2 T vx_{s} + 3 px_{f} - 3 px_{s}\right)^{2}}{T
 $$
 
 对 $T$ 求导，可得：
+
 $$
 \begin{split}
-
 g^{'}(T)=1 &+ \frac{- 4 vx_{f}^{2} - 4 vx_{f} vx_{s} - 4 vx_{s}^{2} - 4 vy_{f}^{2} - 4 vy_{f} vy_{s} - 4 vy_{s}^{2} - 4 vz_{f}^{2} - 4 vz_{f} vz_{s} - 4 vz_{s}^{2}}{T^{2}} \\ &+ \frac{24 px_{f} vx_{f} + 24 px_{f} vx_{s} - 24 px_{s} vx_{f} - 24 px_{s} vx_{s} + 24 py_{f} vy_{f} + 24 py_{f} vy_{s} - 24 py_{s} vy_{f} - 24 py_{s} vy_{s} + 24 pz_{f} vz_{f} + 24 pz_{f} vz_{s} - 24 pz_{s} vz_{f} - 24 pz_{s} vz_{s}}{T^{3}} \\ &+ \frac{- 36 px_{f}^{2} + 72 px_{f} px_{s} - 36 px_{s}^{2} - 36 py_{f}^{2} + 72 py_{f} py_{s} - 36 py_{s}^{2} - 36 pz_{f}^{2} + 72 pz_{f} pz_{s} - 36 pz_{s}^{2}}{T^{4}}
-
 \end{split}
 $$
 
 令 $g^{'}(T)=0$ , 并且等式两边同乘 $T^4$ , 可得：
+
 $$
 \begin{split}
 g^{'}(T) = 
