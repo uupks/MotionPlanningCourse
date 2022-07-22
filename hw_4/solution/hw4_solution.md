@@ -2,6 +2,53 @@
 
 ## Q1 - OBVP partially free final state
 
+参考论文 [A computationally efficient motion primitive for quadrocopter
+trajectory generation](./mueTRO15.pdf) (Section Ⅲ - C - 2):
+> These states may correspondingly be specifified as free when solving the optimal input trajectory, by noting that the corresponding costates must equal zero at the end time.
+
+* Fixed position
+  
+  当只固定末端位置时, 末端速度和加速度对应的 `costate` ($\lambda_{2}$ and $\lambda_{3}$)为0. 
+  
+  根据
+  
+  $$
+  \lambda{(t)} = \frac{1}{T} \left[\begin{matrix}
+    -2\alpha \\
+    2\alpha{t}+2\beta \\
+    -\alpha{t^2}-2{\beta}t-2{\gamma}
+  \end{matrix}\right]
+  $$
+
+  可得
+
+  $$
+  \begin{split}
+    {\beta} &= -{\alpha}t \\
+    {\gamma} &= \frac{1}{2}{\alpha}t^2
+  \end{split}
+  $$
+
+  由论文中公式(22)可得
+
+  $$
+  \begin{split}
+    \frac{1}{20}{\alpha}T^5 &= {\Delta}p \\
+    {\alpha} &= \frac{1}{T^5}*20{\Delta}p
+    
+  \end{split}
+  $$
+
+  回代 $\beta$ 和 $\gamma$, 得到：
+  $$
+    \begin{split}
+      \left[\begin{matrix} \alpha \\ \beta \\ \gamma \end{matrix}
+      \right] = \frac{1}{T^5}\left[\begin{matrix}
+        20 \\ -20T \\ 10T^2
+      \end{matrix} \right]\Delta{p}
+    \end{split}
+  $$
+
 ---
 
 ## Q2 - Optimal analytic expression of T
