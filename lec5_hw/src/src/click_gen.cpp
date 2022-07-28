@@ -235,8 +235,6 @@ public:
 
             Eigen::MatrixX3d coefficientMatrix = Eigen::MatrixXd::Zero(6 * pieceNum, 3);
 
-            std::cout<<"coefficientMatrix : \n"<<coefficientMatrix<<std::endl;
-
             minimumJerkTrajGen(pieceNum,
                                initialPos, initialVel, initialAcc,
                                terminalPos, terminalVel, terminalAcc,
