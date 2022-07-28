@@ -7,3 +7,5 @@
 * [L3 - Sampling Based Path Finding](./hw_3_updated/solution/hw_3_solution.md)
 
 * [L4 - KINODYNAMIC PATH FINDING](./hw_4/solution/hw4_solution.md)
+
+* [L5 - Optimization-Based Trajectory Planning](./lec5_hw/solution/hw5_solution.md)
