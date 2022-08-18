@@ -9,3 +9,5 @@
 * [L4 - KINODYNAMIC PATH FINDING](./hw_4/solution/hw4_solution.md)
 
 * [L5 - Optimization-Based Trajectory Planning](./lec5_hw/solution/hw5_solution.md)
+
+* [L6 - Model Predictive Control](./L6-homework/solution/hw6_solution.md)
